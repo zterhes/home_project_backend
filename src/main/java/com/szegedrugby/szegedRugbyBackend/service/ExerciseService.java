@@ -23,14 +23,14 @@ public class ExerciseService {
 
 
     public ExerciseEntity addNewExercise(String exerciseTitle, String exercisePictureRoute) throws ExerciseAlreadyRegisteredException {
-        Optional<ExerciseService>sameTitle=exerciseRepository.findFirstByTitleIgnoreLowerCase(exerciseTitle);
-        if (sameTitle.isPresent()){
+        Optional<ExerciseEntity> sameTitle = exerciseRepository.findFirstByTitleIgnoreCase(exerciseTitle);
+        if (sameTitle.isPresent()) {
             log.error("This exerciseTitle already registered. Title: {}", exerciseTitle);
             throw new ExerciseAlreadyRegisteredException("This exerciseTitle already registered.");
-        }else{
-            log.info("The pic path: {}",exercisePictureRoute);
-            ExerciseEntity result=exerciseRepository.save(new ExerciseEntity(exerciseTitle,exercisePictureRoute));
-            log.info("Exercise saved : {}: ",result.toString());
+        } else {
+            log.info("The pic path: {}", exercisePictureRoute);
+            ExerciseEntity result = exerciseRepository.save(new ExerciseEntity(exerciseTitle, exercisePictureRoute));
+            log.info("Exercise saved : {}: ", result.toString());
             return result;
         }
     }

@@ -1,6 +1,9 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 public class ExerciseEntity {
@@ -8,25 +11,23 @@ public class ExerciseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String exercise_title;
+    private String title;
 
     private String exercisePictureRoute;
 
     protected ExerciseEntity() {
     }
 
-    ;
-
-    public ExerciseEntity(String exercise_title, String exercisePictureRoute) {
-        this.exercise_title = exercise_title;
+    public ExerciseEntity(String title, String exercisePictureRoute) {
+        this.title = title;
         this.exercisePictureRoute = exercisePictureRoute;
     }
 
     @Override
     public String toString() {
         return "ExerciseEntity{" +
-                "exercise_id=" + id +
-                ", exercise_title='" + exercise_title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", exercisePictureRoute='" + exercisePictureRoute + '\'' +
                 '}';
     }
@@ -36,11 +37,11 @@ public class ExerciseEntity {
     }
 
     public String getExercise_title() {
-        return exercise_title;
+        return title;
     }
 
     public void setExercise_title(String exercise_title) {
-        this.exercise_title = exercise_title;
+        this.title = exercise_title;
     }
 
     public String getExercisePictureRoute() {

@@ -11,5 +11,5 @@ public interface ExerciseRepository extends CrudRepository<ExerciseEntity,Long> 
     @Override
     List<ExerciseEntity>findAll();
 
-    Optional<ExerciseService> findFirstByTitleIgnoreLowerCase(String exerciseTitle);
+    Optional<ExerciseEntity> findFirstByTitleIgnoreCase(String exerciseTitle);
 }

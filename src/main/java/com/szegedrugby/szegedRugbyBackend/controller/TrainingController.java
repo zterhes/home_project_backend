@@ -56,18 +56,44 @@ public class TrainingController {
         return planEntityList;
     }
 
+
     @PostMapping("/exercices/addExercise")
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseEntity addExercise(@RequestParam(value = "exerciseTitle") String exerciseTitle,
-                                      @RequestParam(value = "exercisePictureRoute", required = false) String exercisePictureRoute) {
-        log.info("Incoming addExercise request : {},{}", exerciseTitle, exercisePictureRoute);
+    public ExerciseEntity addExercise(@RequestBody Test test){
+       log.info("Incoming addExercise request : {}",test);
         ExerciseEntity result = null;
         try {
-            result = exerciseService.addNewExercise(exerciseTitle, exercisePictureRoute);
+            result = exerciseService.addNewExercise(test.getTitle(), test.getPath());
             return result;
         } catch (ExerciseAlreadyRegisteredException e) {
             log.error("Error when adding new exercise: {}" + e.getMessage());
             throw new ResponseStatusException(e.getHttpStatus(), e.getMessage());
         }
+        }
+}
+
+class Test{
+    private String title;
+    private String path;
+
+    public Test(String title, String path) {
+        this.title = title;
+        this.path = path;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }
