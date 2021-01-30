@@ -2,12 +2,16 @@ package com.szegedrugby.szegedRugbyBackend.controller;
 
 import com.szegedrugby.szegedRugbyBackend.entity.ExerciseEntity;
 import com.szegedrugby.szegedRugbyBackend.entity.PlanEntity;
+import com.szegedrugby.szegedRugbyBackend.entity.TrainingEntity;
+import com.szegedrugby.szegedRugbyBackend.entity.TrainingRegisterRequest;
 import com.szegedrugby.szegedRugbyBackend.exception.ExerciseAlreadyRegisteredException;
+import com.szegedrugby.szegedRugbyBackend.exception.NoDataInTableException;
 import com.szegedrugby.szegedRugbyBackend.exception.PlanAlreadyRegisteredException;
 import com.szegedrugby.szegedRugbyBackend.exception.TrainingException;
 import com.szegedrugby.szegedRugbyBackend.repository.PlanRepository;
 import com.szegedrugby.szegedRugbyBackend.service.ExerciseService;
 import com.szegedrugby.szegedRugbyBackend.service.PlansService;
+import com.szegedrugby.szegedRugbyBackend.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ public class TrainingController {
 
     PlansService plansService;
     ExerciseService exerciseService;
+    TrainingService trainingService;
 
     @Autowired
     public TrainingController(PlansService plansService, ExerciseService exerciseService) {
@@ -49,6 +54,7 @@ public class TrainingController {
     }
 
     @GetMapping("/plans/getAll")
+    @ResponseStatus(HttpStatus.FOUND)
     public List<PlanEntity> getPlans() {
         log.info("Incoming call for all plans");
         List<PlanEntity> planEntityList = plansService.listAllPlans();
@@ -59,8 +65,8 @@ public class TrainingController {
 
     @PostMapping("/exercices/addExercise")
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseEntity addExercise(@RequestBody Test test){
-       log.info("Incoming addExercise request : {}",test);
+    public ExerciseEntity addExercise(@RequestBody Test test) {
+        log.info("Incoming addExercise request : {}", test);
         ExerciseEntity result = null;
         try {
             result = exerciseService.addNewExercise(test.getTitle(), test.getPath());
@@ -69,10 +75,33 @@ public class TrainingController {
             log.error("Error when adding new exercise: {}" + e.getMessage());
             throw new ResponseStatusException(e.getHttpStatus(), e.getMessage());
         }
+    }
+
+    @GetMapping("exercises/getAll")
+    @ResponseStatus(HttpStatus.FOUND)
+    public List<ExerciseEntity> getExercises() {
+        log.info("Incoming getExercises request");
+        List<ExerciseEntity> exerciseEntityList = null;
+        try {
+            exerciseEntityList = exerciseService.listAllExercises();
+            log.info("Sended data: {}", exerciseEntityList);
+            return exerciseEntityList;
+        } catch (NoDataInTableException e) {
+            throw new ResponseStatusException(e.getHttpStatus(),e.getMessage());
         }
+    }
+
+    @PostMapping("trainings/addTraining")
+    @ResponseStatus(HttpStatus.CREATED)
+        public TrainingEntity addTraining(@RequestBody TrainingRegisterRequest request){
+        log.info("Incoming addTraining request : {}", request);
+        TrainingEntity result = trainingService.addNewTraining(new TrainingEntity(request.getTitle(),request.getType()));
+        return null;
+    }
+
 }
 
-class Test{
+class Test {
     private String title;
     private String path;
 
