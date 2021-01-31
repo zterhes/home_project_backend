@@ -33,11 +33,11 @@ public class TrainingController {
     TrainingService trainingService;
 
     @Autowired
-    public TrainingController(PlansService plansService, ExerciseService exerciseService) {
+    public TrainingController(PlansService plansService, ExerciseService exerciseService, TrainingService trainingService) {
         this.plansService = plansService;
         this.exerciseService = exerciseService;
+        this.trainingService = trainingService;
     }
-
 
     @PostMapping("/addPlan")
     @ResponseStatus(HttpStatus.CREATED)
@@ -87,16 +87,22 @@ public class TrainingController {
             log.info("Sended data: {}", exerciseEntityList);
             return exerciseEntityList;
         } catch (NoDataInTableException e) {
-            throw new ResponseStatusException(e.getHttpStatus(),e.getMessage());
+            throw new ResponseStatusException(e.getHttpStatus(), e.getMessage());
         }
     }
 
     @PostMapping("trainings/addTraining")
     @ResponseStatus(HttpStatus.CREATED)
-        public TrainingEntity addTraining(@RequestBody TrainingRegisterRequest request){
+    public TrainingEntity addTraining(@RequestBody TrainingRegisterRequest request) {
         log.info("Incoming addTraining request : {}", request);
-        TrainingEntity result = trainingService.addNewTraining(new TrainingEntity(request.getTitle(),request.getType()));
-        return null;
+        try {
+            PlanEntity planEntity = plansService.getPlanById(request.getPlanId());
+            TrainingEntity result = trainingService.addNewTraining(new TrainingEntity(request.getTitle(), request.getType(), planEntity));
+            return result;
+        } catch (NoDataInTableException e) {
+            log.info(e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 }

@@ -3,10 +3,12 @@ package com.szegedrugby.szegedRugbyBackend.entity;
 public class TrainingRegisterRequest {
     private String title;
     private String type;
+    private Long planId;
 
-    public TrainingRegisterRequest(String title, String type) {
+    public TrainingRegisterRequest(String title, String type, Long planId) {
         this.title = title;
         this.type = type;
+        this.planId = planId;
     }
 
     @Override
@@ -14,7 +16,16 @@ public class TrainingRegisterRequest {
         return "TrainingRegisterRequest{" +
                 "title='" + title + '\'' +
                 ", type='" + type + '\'' +
+                ", planId=" + planId +
                 '}';
+    }
+
+    public Long getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(Long planId) {
+        this.planId = planId;
     }
 
     public String getTitle() {

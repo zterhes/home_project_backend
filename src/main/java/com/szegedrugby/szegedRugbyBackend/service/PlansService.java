@@ -1,6 +1,7 @@
 package com.szegedrugby.szegedRugbyBackend.service;
 
 import com.szegedrugby.szegedRugbyBackend.entity.PlanEntity;
+import com.szegedrugby.szegedRugbyBackend.exception.NoDataInTableException;
 import com.szegedrugby.szegedRugbyBackend.exception.PlanAlreadyRegisteredException;
 import com.szegedrugby.szegedRugbyBackend.repository.PlanRepository;
 import org.slf4j.Logger;
@@ -40,6 +41,16 @@ public class PlansService {
             PlanEntity result = planRepository.save(new PlanEntity(title));
             log.info("Plan saved: {}",result.toString());
             return result;
+        }
+    }
+
+    public PlanEntity getPlanById(Long planId) throws NoDataInTableException {
+        log.info("getPlanId called with ID: {}",planId);
+        Optional<PlanEntity>planEntity=planRepository.findById(planId);
+        if(planEntity.isEmpty())throw new NoDataInTableException("Did not find this ID",HttpStatus.NOT_FOUND);
+        else {
+            log.info("PlanEntity find : {}",planEntity.get());
+            return planEntity.get();
         }
     }
 }
