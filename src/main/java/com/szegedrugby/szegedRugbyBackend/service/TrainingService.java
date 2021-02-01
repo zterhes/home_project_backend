@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TrainingService {
-    Logger log= LoggerFactory.getLogger(TrainingService.class);
+    Logger log = LoggerFactory.getLogger(TrainingService.class);
 
     TrainingRepository trainingRepository;
 
@@ -20,8 +20,8 @@ public class TrainingService {
 
 
     public TrainingEntity addNewTraining(TrainingEntity trainingEntity) {
-        TrainingEntity result=trainingRepository.save(trainingEntity);
-        log.info("The result of addTraining : {}",result);
+        TrainingEntity result = trainingRepository.save(trainingEntity);
+        log.info("The result of addTraining : {}", result);
         return result;
     }
 }

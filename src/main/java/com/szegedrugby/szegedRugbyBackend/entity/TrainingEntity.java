@@ -1,7 +1,10 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import org.w3c.dom.stylesheets.LinkStyle;
+
 import javax.persistence.*;
 import java.util.InputMismatchException;
+import java.util.List;
 
 @Entity
 public class TrainingEntity {
@@ -22,10 +25,16 @@ public class TrainingEntity {
     private TrainingTypes type;
 
     @ManyToOne
-    @JoinColumn(name = "plan",nullable = false)
+    @JoinColumn(name = "plan", nullable = false)
     private PlanEntity planEntity;
 
-    protected TrainingEntity(){};
+    @OneToMany(mappedBy = "trainingEntity")
+    List<TrainingExerciseConnector> trainingExerciseConnectorList;
+
+    protected TrainingEntity() {
+    }
+
+    ;
 
     public TrainingEntity(String title, String type, PlanEntity planEntity) {
         this.title = title;

@@ -1,9 +1,7 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class ExerciseEntity {
@@ -14,6 +12,9 @@ public class ExerciseEntity {
     private String title;
 
     private String exercisePictureRoute;
+
+    @OneToMany(mappedBy = "exerciseEntity")
+    List<TrainingExerciseConnector> trainingExerciseConnectorList;
 
     protected ExerciseEntity() {
     }
