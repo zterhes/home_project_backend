@@ -1,8 +1,10 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import lombok.NoArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -18,23 +20,21 @@ public class TrainingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     private String title;
 
     private TrainingTypes type;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plan", nullable = false)
     private PlanEntity planEntity;
 
     @OneToMany(mappedBy = "trainingEntity")
     List<TrainingExerciseConnector> trainingExerciseConnectorList;
 
-    protected TrainingEntity() {
-    }
+    protected TrainingEntity(){};
 
-    ;
 
     public TrainingEntity(String title, String type, PlanEntity planEntity) {
         this.title = title;
@@ -44,6 +44,11 @@ public class TrainingEntity {
         else if (type.equalsIgnoreCase("Aerob")) this.type = TrainingTypes.AEROB;
         else throw new InputMismatchException();
         this.planEntity = planEntity;
+        this.trainingExerciseConnectorList=new ArrayList<>();
+    }
+
+    public void addDataToTrainingExerciseConnectorList(TrainingExerciseConnector trainingExerciseConnector){
+        trainingExerciseConnectorList.add(trainingExerciseConnector);
     }
 
     @Override
@@ -53,6 +58,35 @@ public class TrainingEntity {
                 ", title='" + title + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setType(TrainingTypes type) {
+        this.type = type;
+    }
+
+    public PlanEntity getPlanEntity() {
+        return planEntity;
+    }
+
+    public void setPlanEntity(PlanEntity planEntity) {
+        this.planEntity = planEntity;
+    }
+
+    public List<TrainingExerciseConnector> getTrainingExerciseConnectorList() {
+        return trainingExerciseConnectorList;
+    }
+
+    public void setTrainingExerciseConnectorList(List<TrainingExerciseConnector> trainingExerciseConnectorList) {
+        this.trainingExerciseConnectorList = trainingExerciseConnectorList;
     }
 
     public TrainingTypes getType() {

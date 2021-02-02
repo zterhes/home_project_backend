@@ -6,9 +6,7 @@ import com.szegedrugby.szegedRugbyBackend.entity.TrainingEntity;
 import com.szegedrugby.szegedRugbyBackend.entity.TrainingRegisterRequest;
 import com.szegedrugby.szegedRugbyBackend.exception.ExerciseAlreadyRegisteredException;
 import com.szegedrugby.szegedRugbyBackend.exception.NoDataInTableException;
-import com.szegedrugby.szegedRugbyBackend.exception.PlanAlreadyRegisteredException;
 import com.szegedrugby.szegedRugbyBackend.exception.TrainingException;
-import com.szegedrugby.szegedRugbyBackend.repository.PlanRepository;
 import com.szegedrugby.szegedRugbyBackend.service.ExerciseService;
 import com.szegedrugby.szegedRugbyBackend.service.PlansService;
 import com.szegedrugby.szegedRugbyBackend.service.TrainingService;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("training")
@@ -91,17 +88,33 @@ public class TrainingController {
         }
     }
 
-    @PostMapping("trainings/addTraining")
+    @PostMapping("trainings/addEasy")
     @ResponseStatus(HttpStatus.CREATED)
     public TrainingEntity addTraining(@RequestBody TrainingRegisterRequest request) {
         log.info("Incoming addTraining request : {}", request);
         try {
             PlanEntity planEntity = plansService.getPlanById(request.getPlanId());
-            TrainingEntity result = trainingService.addNewTraining(new TrainingEntity(request.getTitle(), request.getType(), planEntity));
+            TrainingEntity result = trainingService.addNewTrainingEasyWay(new TrainingEntity(request.getTitle(), request.getType(), planEntity));
             return result;
         } catch (NoDataInTableException e) {
             log.info(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PostMapping("trainings/add")
+    public String addTrainingTest(@RequestBody TrainingRegisterRequest trainingRegisterRequest) {
+        log.info("//////////////////////////////////////////new incoming request//////////////////////////////////////");
+        log.info("Incoming addTrainingTest request : {}", trainingRegisterRequest);
+        PlanEntity planEntity = null;
+        try {
+            planEntity = plansService.getPlanById(trainingRegisterRequest.getPlanId());
+            log.info("PlanEntity: {}", planEntity);
+            String result = trainingService.addNewTraining(trainingRegisterRequest);
+            log.info("The result: {}", result);
+            return result;
+        } catch (NoDataInTableException e) {
+            throw new ResponseStatusException(e.getHttpStatus());
         }
     }
 

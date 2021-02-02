@@ -1,6 +1,7 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.Set;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
@@ -16,21 +17,16 @@ public class PlanEntity {
     private Long id;
 
     private String title;
-    @OneToMany(mappedBy = "planEntity")
-    private List<TrainingEntity> trainingEntityList;
+    @OneToMany(mappedBy = "planEntity", orphanRemoval = true)
+    private List<TrainingEntity> trainingEntityList = new ArrayList<>();
 
     protected PlanEntity() {
     }
 
     public PlanEntity(String title) {
         this.title = title;
-        this.trainingEntityList = new ArrayList<>();
     }
 
-    public PlanEntity(String title, List<TrainingEntity> list) {
-        this.title = title;
-        this.trainingEntityList = list;
-    }
 
     public void addNewTrainingToPlan(TrainingEntity trainingEntity) {
         trainingEntityList.add(trainingEntity);

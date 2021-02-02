@@ -1,14 +1,26 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@NoArgsConstructor
 public class TrainingRegisterRequest {
     private String title;
     private String type;
     private Long planId;
+    private List<TrainingExersiceConnectorRequest> trainingExerciseConnectorList;
 
-    public TrainingRegisterRequest(String title, String type, Long planId) {
+    public TrainingRegisterRequest(String title, String type, Long planId, List<TrainingExersiceConnectorRequest> trainingExerciseConnectorList) {
         this.title = title;
         this.type = type;
         this.planId = planId;
+
+        this.trainingExerciseConnectorList = trainingExerciseConnectorList;
+
     }
 
     @Override
@@ -17,15 +29,8 @@ public class TrainingRegisterRequest {
                 "title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 ", planId=" + planId +
+                ", trainingExerciseConnectorList=" + trainingExerciseConnectorList +
                 '}';
-    }
-
-    public Long getPlanId() {
-        return planId;
-    }
-
-    public void setPlanId(Long planId) {
-        this.planId = planId;
     }
 
     public String getTitle() {
@@ -42,5 +47,21 @@ public class TrainingRegisterRequest {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Long getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(Long planId) {
+        this.planId = planId;
+    }
+
+    public List<TrainingExersiceConnectorRequest> getTrainingExerciseConnectorList() {
+        return trainingExerciseConnectorList;
+    }
+
+    public void setTrainingExerciseConnectorList(List<TrainingExersiceConnectorRequest> trainingExerciseConnectorList) {
+        this.trainingExerciseConnectorList = trainingExerciseConnectorList;
     }
 }

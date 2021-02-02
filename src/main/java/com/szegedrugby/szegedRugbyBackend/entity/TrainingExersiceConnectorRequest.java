@@ -1,16 +1,14 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
 public class TrainingExersiceConnectorRequest {
-    private Long trainingId;
-    private Long exerciseId;
+    private long exerciseId;
     private int repeats;
     private int workTime;
     private int restBetweenSets;
     private int restAfterRound;
     private boolean linkedToTheNextExercise;
 
-    public TrainingExersiceConnectorRequest(Long trainingId, Long exerciseId, int repeats, int workTime, int restBetweenSets, int restAfterRound, boolean linkedToTheNextExercise) {
-        this.trainingId = trainingId;
+    public TrainingExersiceConnectorRequest(long exerciseId, int repeats, int workTime, int restBetweenSets, int restAfterRound, boolean linkedToTheNextExercise) {
         this.exerciseId = exerciseId;
         this.repeats = repeats;
         this.workTime = workTime;
@@ -22,7 +20,6 @@ public class TrainingExersiceConnectorRequest {
     @Override
     public String toString() {
         return "TrainingExersiceConnectorRequest{" +
-                "trainingId=" + trainingId +
                 ", exerciseId=" + exerciseId +
                 ", repeats=" + repeats +
                 ", workTime=" + workTime +
@@ -30,14 +27,6 @@ public class TrainingExersiceConnectorRequest {
                 ", restAfterRound=" + restAfterRound +
                 ", linkedToTheNextExercise=" + linkedToTheNextExercise +
                 '}';
-    }
-
-    public Long getTrainingId() {
-        return trainingId;
-    }
-
-    public void setTrainingId(Long trainingId) {
-        this.trainingId = trainingId;
     }
 
     public Long getExerciseId() {

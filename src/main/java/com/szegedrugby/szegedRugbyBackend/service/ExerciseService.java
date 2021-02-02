@@ -47,4 +47,15 @@ public class ExerciseService {
             return result;
         }
     }
+
+    public ExerciseEntity findById(Long exerciseId) throws NoDataInTableException {
+        log.info("findById in ExerciseService is called with this ID: {}", exerciseId);
+        Optional<ExerciseEntity> foundExercise = exerciseRepository.findById(exerciseId);
+        if (foundExercise.isEmpty()) {
+            log.error("Exercise with this ID is not Present: {}", exerciseId);
+            throw new NoDataInTableException("Exercise with this ID is not Present", HttpStatus.NOT_FOUND);
+        } else {
+            return foundExercise.get();
+        }
+    }
 }
