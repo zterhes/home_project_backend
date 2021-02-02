@@ -1,5 +1,6 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.NoArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
 
@@ -9,6 +10,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties({"planEntity"})
 public class TrainingEntity {
 
     enum TrainingTypes {

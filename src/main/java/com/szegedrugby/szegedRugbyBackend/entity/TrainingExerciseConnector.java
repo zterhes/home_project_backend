@@ -1,12 +1,13 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.security.PrivateKey;
 
 @Entity
-@NoArgsConstructor
+@JsonIgnoreProperties({"trainingEntity"})
 public class TrainingExerciseConnector {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +26,8 @@ public class TrainingExerciseConnector {
     private int restBetweenSets;
     private int restAfterRound;
     private boolean linkedToTheNextExercise;
+
+    protected TrainingExerciseConnector(){};
 
     public TrainingExerciseConnector(TrainingEntity trainingEntity, ExerciseEntity exerciseEntity, int repeats, int workTime, int restBetweenSets, int restAfterRound, boolean linkedToTheNextExercise) {
         this.trainingEntity = trainingEntity;
