@@ -1,14 +1,12 @@
 package com.szegedrugby.szegedRugbyBackend.controller;
 
-import com.szegedrugby.szegedRugbyBackend.entity.ExerciseEntity;
-import com.szegedrugby.szegedRugbyBackend.entity.PlanEntity;
-import com.szegedrugby.szegedRugbyBackend.entity.TrainingEntity;
-import com.szegedrugby.szegedRugbyBackend.entity.TrainingRegisterRequest;
+import com.szegedrugby.szegedRugbyBackend.entity.*;
 import com.szegedrugby.szegedRugbyBackend.exception.ExerciseAlreadyRegisteredException;
 import com.szegedrugby.szegedRugbyBackend.exception.NoDataInTableException;
 import com.szegedrugby.szegedRugbyBackend.exception.TrainingException;
 import com.szegedrugby.szegedRugbyBackend.service.ExerciseService;
 import com.szegedrugby.szegedRugbyBackend.service.PlansService;
+import com.szegedrugby.szegedRugbyBackend.service.TrainingExerciseConnectorService;
 import com.szegedrugby.szegedRugbyBackend.service.TrainingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+//@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("training")
 public class TrainingController {
@@ -28,12 +27,14 @@ public class TrainingController {
     PlansService plansService;
     ExerciseService exerciseService;
     TrainingService trainingService;
+    TrainingExerciseConnectorService trainingExerciseConnectorService;
 
     @Autowired
-    public TrainingController(PlansService plansService, ExerciseService exerciseService, TrainingService trainingService) {
+    public TrainingController(PlansService plansService, ExerciseService exerciseService, TrainingService trainingService, TrainingExerciseConnectorService trainingExerciseConnectorService) {
         this.plansService = plansService;
         this.exerciseService = exerciseService;
         this.trainingService = trainingService;
+        this.trainingExerciseConnectorService = trainingExerciseConnectorService;
     }
 
     @PostMapping("/addPlan")
@@ -45,13 +46,12 @@ public class TrainingController {
             log.info("The result is: {}", result);
             return result;
         } catch (TrainingException e) {
-            log.error("Error when adding new plan: {}" + e.getMessage());
+            log.error("Error when adding new plan: " + e.getMessage());
             throw new ResponseStatusException(e.getHttpStatus(), e.getMessage());
         }
     }
 
     @GetMapping("/plans/getAll")
-    @ResponseStatus(HttpStatus.FOUND)
     public List<PlanEntity> getPlans() {
         log.info("Incoming call for all plans");
         List<PlanEntity> planEntityList = plansService.listAllPlans();
@@ -85,6 +85,18 @@ public class TrainingController {
             return exerciseEntityList;
         } catch (NoDataInTableException e) {
             throw new ResponseStatusException(e.getHttpStatus(), e.getMessage());
+        }
+    }
+
+    @GetMapping("job/getAllExercisesByTrainingId")
+    public List<TrainingExerciseConnector> getExercisesByTrainingId(@RequestParam(value = "id")Long id){
+        List<TrainingExerciseConnector> result= null;
+        try {
+            result = trainingExerciseConnectorService.findAllByTrainingId(id);
+            log.info("result: {}",result);
+            return result;
+        } catch (NoDataInTableException e) {
+            throw new ResponseStatusException(e.getHttpStatus(),e.getMessage());
         }
     }
 
@@ -124,6 +136,9 @@ class Test {
     private String title;
     private String path;
 
+    protected Test (){};
+
+    @Autowired
     public Test(String title, String path) {
         this.title = title;
         this.path = path;

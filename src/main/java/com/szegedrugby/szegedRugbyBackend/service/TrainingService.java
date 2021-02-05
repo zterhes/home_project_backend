@@ -7,8 +7,11 @@ import com.szegedrugby.szegedRugbyBackend.repository.TrainingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class TrainingService {
@@ -25,6 +28,15 @@ public class TrainingService {
         this.plansService = plansService;
         this.exerciseService = exerciseService;
         this.trainingExerciseConnectorRepository = trainingExerciseConnectorRepository;
+    }
+
+    public TrainingEntity findById(Long id) throws NoDataInTableException {
+        Optional<TrainingEntity>result=trainingRepository.findFirstById(id);
+        if(result.isEmpty()){
+            throw new NoDataInTableException("There is no connector with this trainingId", HttpStatus.NOT_FOUND);
+        }else{
+            return result.get();
+        }
     }
 
     public TrainingEntity addNewTrainingEasyWay(TrainingEntity trainingEntity) {

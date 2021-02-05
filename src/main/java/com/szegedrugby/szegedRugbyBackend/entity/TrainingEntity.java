@@ -1,6 +1,8 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.xml.bind.v2.TODO;
 import lombok.NoArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
 
@@ -22,7 +24,7 @@ public class TrainingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String title;
 
@@ -32,10 +34,15 @@ public class TrainingEntity {
     @JoinColumn(name = "plan", nullable = false)
     private PlanEntity planEntity;
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "trainingEntity")
     List<TrainingExerciseConnector> trainingExerciseConnectorList;
 
-    protected TrainingEntity(){};
+    protected TrainingEntity() {
+    }
+
+    ;
 
 
     public TrainingEntity(String title, String type, PlanEntity planEntity) {
@@ -46,11 +53,15 @@ public class TrainingEntity {
         else if (type.equalsIgnoreCase("Aerob")) this.type = TrainingTypes.AEROB;
         else throw new InputMismatchException();
         this.planEntity = planEntity;
-        this.trainingExerciseConnectorList=new ArrayList<>();
+        this.trainingExerciseConnectorList = new ArrayList<>();
     }
 
-    public void addDataToTrainingExerciseConnectorList(TrainingExerciseConnector trainingExerciseConnector){
+    public void addDataToTrainingExerciseConnectorList(TrainingExerciseConnector trainingExerciseConnector) {
         trainingExerciseConnectorList.add(trainingExerciseConnector);
+    }
+
+    public void removeDataToTrainingExerciseConnectorList(TrainingExerciseConnector trainingExerciseConnector) {
+        trainingExerciseConnectorList.remove(trainingExerciseConnector); // TODO: 03.02.21 hozzáadni megcsinálni, hogy lehessen törölni egy exercise-t a trainingből, ez hozzá a metódus
     }
 
     @Override

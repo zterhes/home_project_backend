@@ -1,5 +1,7 @@
 package com.szegedrugby.szegedRugbyBackend.entity;
 
+import lombok.NoArgsConstructor;
+
 public class TrainingExersiceConnectorRequest {
     private long exerciseId;
     private int repeats;
@@ -7,6 +9,8 @@ public class TrainingExersiceConnectorRequest {
     private int restBetweenSets;
     private int restAfterRound;
     private boolean linkedToTheNextExercise;
+
+    public TrainingExersiceConnectorRequest(){};
 
     public TrainingExersiceConnectorRequest(long exerciseId, int repeats, int workTime, int restBetweenSets, int restAfterRound, boolean linkedToTheNextExercise) {
         this.exerciseId = exerciseId;

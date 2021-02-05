@@ -4,16 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@NoArgsConstructor
+
 public class TrainingRegisterRequest {
     private String title;
     private String type;
     private Long planId;
     private List<TrainingExersiceConnectorRequest> trainingExerciseConnectorList;
 
+
+    protected TrainingRegisterRequest (){};
+
+    @Autowired
     public TrainingRegisterRequest(String title, String type, Long planId, List<TrainingExersiceConnectorRequest> trainingExerciseConnectorList) {
         this.title = title;
         this.type = type;
